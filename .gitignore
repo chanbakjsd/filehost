@@ -1,0 +1,2 @@
+# Don't include hosted files in the Git repo.
+hosted/

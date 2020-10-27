@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>Simple File Host</title>
+	<style type="text/css">
+		body {margin:40px auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0 10px}
+		h1,h2,h3 {line-height:1.2}
+	</style>
+</head>
+<body>
+	<h1>Simple File Host</h1>
+	<p>A simple website that just hosts your file.</p>
+
+	<h2>How to upload files?</h2>
+	<p>HTTP POST files:</p>
+	<pre>curl -F'file=@yourfile.png' [this_domain]/upload</pre>
+	<p>If this instance is password protected:</p>
+	<pre>curl -F'file=@yourfile.png' -F'pass=yourpassword' [this_domain]/upload</pre>
+	<p>You can access uploaded files at the returned URL.</p>
+
+	<h2>How long are files kept?</h2>
+	<p>Until the configured limit of the server is reached! Older and larger files get killed when that's reached.</p>
+
+	<h2>What cannot be uploaded?</h2>
+	<p>Here's a non-exhaustive list.</p>
+	<ul>
+		<li>Piracy</li>
+		<li>Pornography</li>
+		<li>Extremist material of any kind</li>
+		<li>Malware / botnet C&amp;C</li>
+		<li>Cryptocurrency-related things</li>
+		<li>Backups</li>
+		<li>Anything illegal</li>
+	</ul>
+
+	<h2>Help out</h2>
+	<p>
+		If you run a server and like this site, clone it!<br/>
+		<a href="https://github.com/chanbakjsd/filehost">https://github.com/chanbakjsd/filehost</a>
+	</p>
+
+	<h2>Credits</h2>
+	<p>Inspired by 0x0.st. CSS stolen from bettermotherfuckingwebsite.com.</p>
+</body>
+</html>
