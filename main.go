@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -8,7 +9,7 @@ import (
 
 func main() {
 	err := os.Mkdir("./hosted", 0755)
-	if err != nil {
+	if err != nil && !errors.Is(err, os.ErrExist) {
 		panic(err)
 	}
 
