@@ -7,7 +7,10 @@ import (
 )
 
 func main() {
-	os.Mkdir("./hosted", 0755)
+	err := os.Mkdir("./hosted", 0755)
+	if err != nil {
+		panic(err)
+	}
 
 	http.HandleFunc("/upload", upload)
 	http.Handle("/hosted/", http.StripPrefix("/hosted/", http.FileServer(http.Dir("./hosted"))))

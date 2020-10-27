@@ -85,5 +85,5 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Return that it has been uploaded successfully.
-	w.Write([]byte(domain + "/hosted/" + resultFileName))
+	_, _ = w.Write([]byte(domain + "/hosted/" + resultFileName))
 }
