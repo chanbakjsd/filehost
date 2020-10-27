@@ -40,7 +40,7 @@ func init() {
 //getNextFileNum returns the next number of the file. It should be converted as base-36.
 func getNextFileNum() int64 {
 	fileMutex.Lock()
-	fileMutex.Unlock()
+	defer fileMutex.Unlock()
 
 	fileCount++
 	return fileCount
