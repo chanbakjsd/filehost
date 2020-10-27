@@ -27,8 +27,8 @@ func hasHitRequestLimit(remoteAddr string) bool {
 
 	// Create if limiters don't exist yet.
 	if requestLimit[ip] == nil {
-		requestLimit[ip] = rate.NewLimiter(rate.Limit(1.0/12), 5)
-		sizeLimit[ip] = rate.NewLimiter(rate.Limit(1024*1024), 100*1024*1024)
+		requestLimit[ip] = rate.NewLimiter(rate.Limit(requestPerSecond), requestPerSecond*60)
+		sizeLimit[ip] = rate.NewLimiter(rate.Limit(sizePerSecond), burstSize)
 	}
 
 	return !requestLimit[ip].Allow()
