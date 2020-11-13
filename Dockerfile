@@ -14,6 +14,7 @@ FROM alpine:3.9
 WORKDIR /app
 
 COPY --from=build_base /tmp/filehost/out/filehost /app/filehost
+COPY --from=build_base /tmp/filehost/static/ /app/static/
 EXPOSE 80
 
 CMD ["/app/filehost"]
