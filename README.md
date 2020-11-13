@@ -18,6 +18,16 @@ Consider replacing `[this_domain]` in `static/index.html` with your domain as we
 
 You are recommended to keep this behind a reverse proxy that adds HTTPS.
 
+### Use in Docker
+
+Modify the values in `const.go` and change the port in `Dockerfile` if it's not the default.
+
+After that, run `docker build --tag filehost:0.0 .`, changing `filehost` (Docker image name)
+and `0.0` (Docker image version) as necessary.
+
+To run it, simply use the image you've built. A sample command would be:
+`docker run --publish 80:80 -v filehost:/app/hosted -d filehost:0.0`
+
 ## Defaults
 
 - The server listens to `http://localhost:80`.
