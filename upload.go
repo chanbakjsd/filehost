@@ -45,9 +45,24 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// "Sanitize" the name. Give it a random name and
-	// reuse the extension if it's lowercase letters to make it easier for users.
-	filenameSplit := strings.Split(files[0].Filename, ".")
+	// Sanitize file name and attempt to save the file.
+	resultFileName := sanitizeFileName(files[0].Filename)
+	err := saveFile(resultFileName, files[0])
+	if err != nil {
+		fmt.Println(err)
+		writeError(w, http.StatusInternalServerError)
+		return
+	}
+
+	// Return that it has been uploaded successfully.
+	_, _ = w.Write([]byte(domain + "/hosted/" + resultFileName))
+}
+
+// sanitizeFileName assigns a new filename to the file with a random name and
+// attempts to keep the extension provided that it's lowercase ASCII and not
+// redir (which is reserved for redirection).
+func sanitizeFileName(filename string) string {
+	filenameSplit := strings.Split(filename, ".")
 	ext := ""
 	if len(filenameSplit) > 1 {
 		final := filenameSplit[len(filenameSplit)-1]
@@ -61,33 +76,28 @@ func upload(w http.ResponseWriter, r *http.Request) {
 			ext = "." + final
 		}
 	}
+	return strconv.FormatInt(getNextFileNum(), 36) + ext
+}
 
+// saveFile saves the provided multipart file as the provided name in the hosted
+// directory.
+func saveFile(targetName string, sourceFile *multipart.FileHeader) error {
 	// Create the file to write to.
-	resultFileName := strconv.FormatInt(getNextFileNum(), 36) + ext
-	file, err := os.Create("./hosted/" + resultFileName)
+	file, err := os.Create("./hosted/" + targetName)
 	if err != nil {
-		fmt.Println(err)
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
-		return
+		return err
 	}
 	defer func() {
 		_ = file.Close()
 	}()
 
 	// Prepare the source.
-	source, err := files[0].Open()
+	source, err := sourceFile.Open()
 	if err != nil {
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
-		return
+		return err
 	}
 
 	// And save the file.
 	_, err = io.Copy(file, source)
-	if err != nil {
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
-		return
-	}
-
-	// Return that it has been uploaded successfully.
-	_, _ = w.Write([]byte(domain + "/hosted/" + resultFileName))
+	return err
 }
