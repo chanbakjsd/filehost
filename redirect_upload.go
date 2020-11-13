@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// redirectRegister handles requests to create a new redirect.
 func redirectRegister(w http.ResponseWriter, r *http.Request) {
 	// Checks if it's a valid request or has reached request limit.
 	if r.Method != "POST" {
@@ -58,7 +59,9 @@ func redirectRegister(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
-	defer file.Close()
+	defer func() {
+		_ = file.Close()
+	}()
 
 	// Save the URL into the file.
 	_, err = file.Write([]byte(targetURL))

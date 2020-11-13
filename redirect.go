@@ -7,13 +7,16 @@ import (
 	"os"
 )
 
+// redirect checks if there's an existing .redir file and redirects the user there.
 func redirect(w http.ResponseWriter, r *http.Request) {
 	f, err := os.Open("./hosted/" + r.URL.Path + ".redir")
 	if err != nil {
 		http.Error(w, http.StatusText(404), http.StatusNotFound)
 		return
 	}
-	defer f.Close()
+	defer func() {
+		_ = f.Close()
+	}()
 
 	bytes, err := ioutil.ReadAll(f)
 	if err != nil {

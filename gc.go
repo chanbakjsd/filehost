@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-//cleanFolder checks if the folder needs to be cleaned and removes older file if necessary.
+// cleanFolder checks if the folder needs to be cleaned and removes older file if necessary.
 func cleanFolder() {
 	for {
 		time.Sleep(gcCooldown * time.Second)
