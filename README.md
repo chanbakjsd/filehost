@@ -1,5 +1,13 @@
 # Simple File Hosting
 
+[![License: MIT][license-badge]][license-link]
+[![Report Badge][report-badge ]][report-link]
+
+[license-badge]: https://img.shields.io/github/license/chanbakjsd/filehost?style=flat-square
+[license-link]:  https://github.com/chanbakjsd/filehost/blob/master/LICENSE
+[report-badge]:  https://goreportcard.com/badge/github.com/chanbakjsd/filehost?style=flat-square
+[report-link]:   https://goreportcard.com/report/github.com/chanbakjsd/filehost
+
 This is designed to be a simple Go server that just hosts files and does URL shortening.
 Use at your own risk.
 
