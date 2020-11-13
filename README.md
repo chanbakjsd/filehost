@@ -1,6 +1,6 @@
 # Simple File Hosting
 
-This is designed to be a simple Go server that just hosts files.
+This is designed to be a simple Go server that just hosts files and does URL shortening.
 Use at your own risk.
 
 ## Usage

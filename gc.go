@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -38,6 +39,9 @@ func cleanFolder() {
 		heap.Init(&deleteQueue)
 		for size > maxStorage {
 			toDelete := heap.Pop(&deleteQueue).(os.FileInfo)
+			if skipRedirects && strings.HasSuffix(toDelete.Name(), ".redir") {
+				continue
+			}
 			if err := os.Remove("./hosted/" + toDelete.Name()); err != nil {
 				fmt.Println(err)
 			} else {

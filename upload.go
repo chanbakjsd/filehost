@@ -56,8 +56,8 @@ func upload(w http.ResponseWriter, r *http.Request) {
 				safe = false
 			}
 		}
-		if safe {
-			ext = "." + filenameSplit[len(filenameSplit)-1]
+		if safe && final != "redir" { // Redir is reserved for redirection.
+			ext = "." + final
 		}
 	}
 
@@ -69,6 +69,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
+	defer file.Close()
 
 	// Prepare the source.
 	source, err := files[0].Open()

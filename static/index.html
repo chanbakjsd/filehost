@@ -20,8 +20,16 @@
 	<pre>curl -F'file=@yourfile.png' -F'pass=yourpassword' [this_domain]/upload</pre>
 	<p>You can access uploaded files at the returned URL.</p>
 
-	<h2>How long are files kept?</h2>
+	<h2>How to shorten URL?</h2>
+	<p>HTTP POST your URL:</p>
+	<pre>curl -d'url=https://example.com' [this_domain]/shorten</pre>
+	<p>If this instance is password protected:</p>
+	<pre>curl -d'url=https://example.com' -d'pass=yourpassword' [this_domain]/shorten</pre>
+	<p>You can access redirects at the returned URL.</p>
+
+	<h2>How long are files and shortened URLs kept?</h2>
 	<p>Until the configured limit of the server is reached! Older and larger files get killed when that's reached.</p>
+	<p>URLs are treated as files with the URL as its content.</p>
 
 	<h2>What cannot be uploaded?</h2>
 	<p>Here's a non-exhaustive list.</p>

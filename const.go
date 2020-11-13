@@ -9,6 +9,8 @@ const (
 	maxStorage = 5 * 1024 * 1024 * 1024
 	// Wait 1 minute before checking if files need to be deleted.
 	gcCooldown = 60
+	// By default, GC also cleans up redirect URLs. Set this to `true` to make it skip them.
+	skipRedirects = false
 
 	// Password if you prefer to limit its access. Blank means not required.
 	password = ""
