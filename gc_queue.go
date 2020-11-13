@@ -12,7 +12,8 @@ type queue []os.FileInfo
 // 1KB is considered the same as 1 second in this code.
 // Therefore files that are 1MB larger will be deleted 1024 seconds or about 17 minutes earlier.
 func (q queue) deletionPriority(i int) int {
-	return int(time.Since(q[i].ModTime()).Seconds()) + int(q[i].Size()/1024)
+	const bytesPerSecond = 1024
+	return int(time.Since(q[i].ModTime()).Seconds()) + int(q[i].Size()/bytesPerSecond)
 }
 
 // === CODE BELOW THIS POINT MAKES queue IMPLEMENT container/Heap.Interface. ===

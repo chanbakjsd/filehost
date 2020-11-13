@@ -11,7 +11,7 @@ import (
 func redirect(w http.ResponseWriter, r *http.Request) {
 	f, err := os.Open("./hosted/" + r.URL.Path + ".redir")
 	if err != nil {
-		http.Error(w, http.StatusText(404), http.StatusNotFound)
+		writeError(w, http.StatusNotFound)
 		return
 	}
 	defer func() {
@@ -21,7 +21,7 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 	bytes, err := ioutil.ReadAll(f)
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		writeError(w, http.StatusInternalServerError)
 		return
 	}
 

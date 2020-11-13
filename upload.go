@@ -3,21 +3,22 @@ package main
 import (
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 )
 
-//upload handles the upload endpoint.
+// upload handles the upload endpoint.
 func upload(w http.ResponseWriter, r *http.Request) {
 	// Checks if it's a valid request or has reached request limit.
 	if r.Method != "POST" {
-		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		writeError(w, http.StatusBadRequest)
 		return
 	}
 	if hasHitRequestLimit(r.RemoteAddr) {
-		http.Error(w, http.StatusText(429), http.StatusTooManyRequests)
+		writeError(w, http.StatusTooManyRequests)
 		return
 	}
 	if err := r.ParseMultipartForm(maxMemoryPerRequest); err != nil {
@@ -48,7 +49,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	// reuse the extension if it's lowercase letters to make it easier for users.
 	filenameSplit := strings.Split(files[0].Filename, ".")
 	ext := ""
-	if len(filenameSplit) >= 2 {
+	if len(filenameSplit) > 1 {
 		final := filenameSplit[len(filenameSplit)-1]
 		safe := true
 		for _, v := range []byte(final) {

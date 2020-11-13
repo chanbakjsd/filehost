@@ -27,7 +27,9 @@ func hasHitRequestLimit(remoteAddr string) bool {
 
 	// Create if limiters don't exist yet.
 	if requestLimit[ip] == nil {
-		requestLimit[ip] = rate.NewLimiter(rate.Limit(requestPerSecond), requestPerSecond*60)
+		const secondsPerMinute = 60
+		// Initial burst is exactly one minute worth of requests.
+		requestLimit[ip] = rate.NewLimiter(rate.Limit(requestPerSecond), requestPerSecond*secondsPerMinute)
 		sizeLimit[ip] = rate.NewLimiter(rate.Limit(sizePerSecond), burstSize)
 	}
 

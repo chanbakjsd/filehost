@@ -12,17 +12,17 @@ import (
 func redirectRegister(w http.ResponseWriter, r *http.Request) {
 	// Checks if it's a valid request or has reached request limit.
 	if r.Method != "POST" {
-		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		writeError(w, http.StatusBadRequest)
 		return
 	}
 	if hasHitRequestLimit(r.RemoteAddr) {
-		http.Error(w, http.StatusText(429), http.StatusTooManyRequests)
+		writeError(w, http.StatusTooManyRequests)
 		return
 	}
 
 	err := r.ParseForm()
 	if err != nil {
-		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		writeError(w, http.StatusBadRequest)
 		return
 	}
 
@@ -56,7 +56,7 @@ func redirectRegister(w http.ResponseWriter, r *http.Request) {
 	file, err := os.Create("./hosted/" + resultID + ".redir")
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		writeError(w, http.StatusInternalServerError)
 		return
 	}
 	defer func() {
@@ -67,7 +67,7 @@ func redirectRegister(w http.ResponseWriter, r *http.Request) {
 	_, err = file.Write([]byte(targetURL))
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		writeError(w, http.StatusInternalServerError)
 		return
 	}
 
