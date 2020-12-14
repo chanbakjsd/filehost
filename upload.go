@@ -68,8 +68,9 @@ func sanitizeFileName(filename string) string {
 		final := filenameSplit[len(filenameSplit)-1]
 		safe := true
 		for _, v := range []byte(final) {
-			if v < 'a' || v > 'z' {
+			if (v < 'a' || v > 'z') && (v < '0' || v > '9') {
 				safe = false
+				break
 			}
 		}
 		if safe && final != "redir" { // Redir is reserved for redirection.
