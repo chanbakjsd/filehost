@@ -14,9 +14,7 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound)
 		return
 	}
-	defer func() {
-		_ = f.Close()
-	}()
+	defer f.Close()
 
 	bytes, err := ioutil.ReadAll(f)
 	if err != nil {

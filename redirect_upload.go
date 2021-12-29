@@ -59,9 +59,7 @@ func redirectRegister(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError)
 		return
 	}
-	defer func() {
-		_ = file.Close()
-	}()
+	defer file.Close()
 
 	// Save the URL into the file.
 	_, err = file.Write([]byte(targetURL))
@@ -71,5 +69,5 @@ func redirectRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, _ = w.Write([]byte(domain + "/r/" + resultID))
+	w.Write([]byte(domain + "/r/" + resultID))
 }

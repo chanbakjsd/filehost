@@ -17,7 +17,7 @@ func cleanFolder() {
 		// Calculate total file size and gather list of files.
 		var size int64
 		deleteQueue := make(queue, 0)
-		_ = filepath.Walk("./hosted", func(_ string, f os.FileInfo, err error) error {
+		filepath.Walk("./hosted", func(_ string, f os.FileInfo, err error) error {
 			if err != nil {
 				fmt.Println(err)
 				return nil

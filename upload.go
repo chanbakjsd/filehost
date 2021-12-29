@@ -55,7 +55,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Return that it has been uploaded successfully.
-	_, _ = w.Write([]byte(domain + "/hosted/" + resultFileName))
+	w.Write([]byte(domain + "/hosted/" + resultFileName))
 }
 
 // sanitizeFileName assigns a new filename to the file with a random name and
@@ -88,9 +88,7 @@ func saveFile(targetName string, sourceFile *multipart.FileHeader) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = file.Close()
-	}()
+	defer file.Close()
 
 	// Prepare the source.
 	source, err := sourceFile.Open()

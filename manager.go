@@ -1,47 +1,23 @@
 package main
 
 import (
-	"os"
-	"path/filepath"
-	"strconv"
-	"strings"
-	"sync"
+	"math/rand"
+	"time"
 )
 
-var (
-	fileCount int64
-	fileMutex sync.Mutex
-)
+var r rand.Rand
 
 func init() {
-	// Loop through all files in ./hosted to locate the "highest" named file.
-	// Filenames are interpreted as base-36 numbers.
-	err := filepath.Walk("./hosted", func(_ string, f os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if f.IsDir() {
-			return nil
-		}
-		num, err := strconv.ParseInt(strings.Split(f.Name(), ".")[0], 36, 64)
-		if err != nil {
-			return err
-		}
-		if num > fileCount {
-			fileCount = num
-		}
-		return nil
-	})
-	if err != nil {
-		panic(err)
-	}
+	r = *rand.New(rand.NewSource(time.Now().Unix()))
 }
 
-// getNextFileNum returns the next number of the file. It should be converted as base-36.
-func getNextFileNum() int64 {
-	fileMutex.Lock()
-	defer fileMutex.Unlock()
+const (
+	minNum = 2176782336  // 36^6
+	maxNum = 78364164096 // 36^7
+)
 
-	fileCount++
-	return fileCount
+// getNextFileNum returns the next number of the file. It should be converted
+// as base-36. It does not verify that the number is not already in use.
+func getNextFileNum() int64 {
+	return rand.Int63n(maxNum-minNum) + minNum
 }
