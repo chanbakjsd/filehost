@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-var r rand.Rand
+var r *rand.Rand
 
 func init() {
-	r = *rand.New(rand.NewSource(time.Now().Unix()))
+	r = rand.New(rand.NewSource(time.Now().Unix()))
 }
 
 const (
@@ -19,5 +19,5 @@ const (
 // getNextFileNum returns the next number of the file. It should be converted
 // as base-36. It does not verify that the number is not already in use.
 func getNextFileNum() int64 {
-	return rand.Int63n(maxNum-minNum) + minNum
+	return r.Int63n(maxNum-minNum) + minNum
 }
