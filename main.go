@@ -13,9 +13,17 @@ func main() {
 		panic(err)
 	}
 
+	files := http.StripPrefix("/hosted/", http.FileServer(http.Dir("./hosted")))
+
 	http.HandleFunc("/upload", upload)
 	http.HandleFunc("/shorten", redirectRegister)
-	http.Handle("/hosted/", http.StripPrefix("/hosted/", http.FileServer(http.Dir("./hosted"))))
+	http.HandleFunc("/hosted/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/hosted/" {
+			http.NotFound(w, r)
+			return
+		}
+		files.ServeHTTP(w, r)
+	})
 	http.Handle("/r/", http.StripPrefix("/r/", http.HandlerFunc(redirect)))
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 
